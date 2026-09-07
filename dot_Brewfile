@@ -1,4 +1,3 @@
-#
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Manage your dotfiles across multiple diverse machines, securely
@@ -44,5 +43,7 @@ cask "iterm2"
 cask "raycast"
 # Window snapping tool
 cask "rectangle-pro"
+# Open-source code editor
+cask "visual-studio-code"
 # Full-featured companion app to the YubiKey
 cask "yubico-authenticator"
