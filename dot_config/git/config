@@ -6,7 +6,7 @@
   ci = commit
   ciq = commit --allow-empty-message --no-edit
   co = checkout
-  csv = log --pretty=format:"%h,%al,%ad,%s"
+  csv = log --pretty=format:\"%h,%al,%ad,%s\"
   ct = clone --filter=tree:0
   ctn = clone --filter=tree:0 --no-checkout
   dist = !f() { git clean -ffdx -e .direnv -e .envrc ${1:+${GIT_PREFIX}}${1:-:/} && git restore ${1:+${GIT_PREFIX}}${1:-:/} } f
@@ -14,12 +14,12 @@
   ff = fetch --filter=blob:none
   ft = fetch --filter=tree:0
   gc-all = -c gc.pruneExpire=now -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 -c gc.rerereResolved=0 -c gc.rerereUnresolved=0 gc --aggressive
-  ll = log --pretty=format:"%h: %ar - %aN <%ae> - %s"
-  merges = log --merges --first-parent --pretty=format:"%h,%al,%ad,%s"
+  ll = log --pretty=format:\"%h: %ar - %aN <%ae> - %s\"
+  merges = log --merges --first-parent --pretty=format:\"%h,%al,%ad,%s\"
   root = rev-parse --show-toplevel
   sc = !f() { git clean -ffdx -e .direnv -e .envrc ${1:+${GIT_PREFIX}}${1:-:/} } f
   sca = !f() { git sc ${1:+${GIT_PREFIX}}${1:-:/} && git submodule foreach --recursive git sc } f
-  slog = log --graph --all --topo-order --pretty=format:"%h %ai %s%d (%an)"
+  slog = log --graph --all --topo-order --pretty=format:\"%h %ai %s%d (%an)\"
   st = status
   sti = status --ignored
   suif = submodule update --init --filter=blob:none --recursive
