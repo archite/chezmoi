@@ -1,0 +1,73 @@
+layout_poetry() {
+  PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
+  if [[ ! -f "$PYPROJECT_TOML" ]]; then
+    log_status "No pyproject.toml found. Executing \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
+    poetry init --no-interaction
+    cat >> "$PYPROJECT_TOML" <<-EOF
+
+[tool.poetry]
+package-mode = false
+EOF
+  fi
+
+  if [[ -d ".venv" ]]; then
+    VIRTUAL_ENV="$(pwd)/.venv"
+  else
+    VIRTUAL_ENV=$(poetry env info --path 2>/dev/null ; true)
+  fi
+
+  if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+    log_status "No virtual environment exists. Executing \`poetry install\` to create one."
+    poetry install
+    VIRTUAL_ENV=$(poetry env info --path)
+  fi
+
+  PATH_add "$VIRTUAL_ENV/bin"
+  export POETRY_ACTIVE=1  # or VENV_ACTIVE=1
+  export VIRTUAL_ENV
+}
+
+layout_uv() {
+  # Reload when project config or lockfile change. With --frozen, a pyproject.toml
+  # change triggers an immediate error (lockfile out of sync); a uv.lock change
+  # triggers a re-sync after the user has updated it manually.
+  watch_file .python-version pyproject.toml uv.lock
+
+  if ! has uv; then
+    log_error "uv: command not found. Install from https://docs.astral.sh/uv/"
+    return 1
+  fi
+
+  if [[ ! -f pyproject.toml ]]; then
+    uv init
+    uv lock
+    # log_error "uv: no pyproject.toml found. Run \`uv init\` to create a project."
+    # return 1
+  fi
+
+  local venv_path
+  venv_path="$(expand_path "${UV_PROJECT_ENVIRONMENT:-.venv}")"
+  export UV_PROJECT_ENVIRONMENT="$venv_path"
+
+  local python_arg=()
+  local sync_args=()
+  # uv python specifiers (versions, paths, implementations) never start with
+  # "--", so this distinguishes a python specifier from arguments intended for `uv sync`.
+  if [[ -n "${1:-}" && "${1:-}" != --* ]]; then
+    python_arg=(--python "$1")
+    sync_args=("${@:2}")
+  else
+    sync_args=("$@")
+  fi
+
+  # must use --frozen: we don't want to modify the lock file
+  uv sync --frozen "${python_arg[@]}" "${sync_args[@]}"
+
+  export VIRTUAL_ENV="$venv_path"
+  if [[ -d "$venv_path/bin" ]]; then
+    PATH_add "$venv_path/bin"
+  fi
+  if [[ -d "$venv_path/Scripts" ]]; then
+    PATH_add "$venv_path/Scripts"
+  fi
+}

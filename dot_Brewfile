@@ -1,0 +1,47 @@
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Manage your dotfiles across multiple diverse machines, securely
+brew "chezmoi"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# User-friendly front-end to ssh-agent(1)
+brew "keychain"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# OpenBSD freely-licensed SSH connectivity tools
+brew "openssh"
+# Provides an easy way to use U2F-compliant authenticators with PAM
+brew "pam-u2f"
+# Pinentry for GPG on Mac
+brew "pinentry-mac"
+# Theme for zsh
+brew "powerlevel10k"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# CLI and Go API to Test Internet Speed using speedtest.net
+brew "speedtest-go"
+# Tool for managing your YubiKey configuration
+brew "ykman"
+# Command-line tool for the YubiKey PIV application
+brew "yubico-piv-tool"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
+# Additional completion definitions for zsh
+brew "zsh-completions"
+cask "font-jetbrains-mono-nerd-font"
+# Terminal emulator as alternative to Apple's Terminal app
+cask "iterm2"
+# Control your tools with a few keystrokes
+cask "raycast"
+# Window snapping tool
+cask "rectangle-pro"
+# Full-featured companion app to the YubiKey
+cask "yubico-authenticator"

@@ -1,0 +1,87 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+alias cat='bat'
+
+alias ls='eza \
+  --color \
+  --git \
+  --group \
+  --icons \
+  --links \
+  --smart-group \
+  --time-style=relative'
+alias la='ls -a'
+alias ll='ls -l'
+alias lla='ll -a'
+alias llaa='lla -a'
+
+alias vi=nvim
+alias vim=nvim
+alias vimdiff="nvim -d"
+
+alias sudo='sudo '
+
+autoload -Uz \
+	compinit \
+	down-line-or-beginning-search \
+	edit-command-line \
+	select-word-style \
+	up-line-or-beginning-search
+
+select-word-style bash
+
+zle -N down-line-or-beginning-search
+zle -N edit-command-line
+zle -N up-line-or-beginning-search
+zle -A backward-kill-word full-backward-kill-word
+
+bindkey -e
+bindkey '^n' down-line-or-beginning-search
+bindkey '^p' up-line-or-beginning-search
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+bindkey '^[^?' full-backward-kill-word
+bindkey '^[[Z' reverse-menu-complete
+
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' cache-path ~/.cache/zsh
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' menu select
+zstyle ':completion:*:*:docker-*:*' option-stacking yes
+zstyle ':completion:*:*:docker:*' option-stacking yes
+zstyle ':completion::complete:make:*:targets' call-command true
+
+eval "$(direnv hook zsh)"
+# [[ -n "${DIRENV_FILE}" ]] && (echo 'reload' && direnv reload) || eval "$(direnv hook zsh)"
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
+[ -z "${SSH_CLIENT}" ] && eval "$(keychain add --eval --immediate --noinherit --quiet)"
+
+source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+
+compinit
+
+export EDITOR=nvim
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

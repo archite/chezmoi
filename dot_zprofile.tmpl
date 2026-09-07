@@ -1,0 +1,17 @@
+{{ if eq .chezmoi.arch "arm64" -}}
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+{{- else -}}
+eval "$(/usr/local/bin/brew shellenv zsh)"
+{{- end }}
+
+PATH=${HOME}/.bin:${PATH}
+FPATH=$(brew --prefix)/share/zsh-completions:${FPATH}
+
+export HOMEBREW_NO_ASK=1
+export HOMEBREW_NO_ENV_HINTS=1
+
+BAT=$(command -v bat -v batcat)
+if [[ -f ${BAT} && -x ${BAT} ]]; then
+	export MANPAGER="col -bx | ${BAT} -l man -p"
+fi
+unset BAT
