@@ -28,9 +28,16 @@
 [commit]
 	gpgsign = true
 
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	process = git-lfs filter-process
+	required = true
+	smudge = git-lfs smudge -- %f
+
+[init]
+	defaultBranch = main
+
 [user]
 	email = adam@akarsoft.com
 	name = Adam Karim
 	signingkey = adam@akarsoft.com
-[init]
-	defaultBranch = main

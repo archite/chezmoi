@@ -39,7 +39,7 @@ layout_uv() {
   fi
 
   if [[ ! -f pyproject.toml ]]; then
-    uv init
+    uv init --bare
     uv lock
     # log_error "uv: no pyproject.toml found. Run \`uv init\` to create a project."
     # return 1

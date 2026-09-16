@@ -1,7 +1,11 @@
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Object-file caching compiler wrapper
+brew "ccache"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
+# Cross-platform make
+brew "cmake"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Modern, maintained replacement for ls
@@ -10,24 +14,46 @@ brew "eza"
 brew "fd"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Distributed revision control system
+brew "git"
+# Git extension for versioning large files
+brew "git-lfs"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
+# Perfect hash function generator
+brew "gperf"
 # User-friendly front-end to ssh-agent(1)
 brew "keychain"
+# Implementation of the file(1) command
+brew "libmagic"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Small build system for use with gyp or CMake
+brew "ninja"
+# On-chip debugging, in-system programming and boundary-scan testing
+brew "open-ocd"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Provides an easy way to use U2F-compliant authenticators with PAM
 brew "pam-u2f"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
-# Theme for zsh
-brew "powerlevel10k"
+# Python package management tool
+brew "poetry"
+# Python interface to Tcl/Tk
+brew "python-tk@3.14"
+# Generic machine emulator and virtualizer
+brew "qemu"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # CLI and Go API to Test Internet Speed using speedtest.net
 brew "speedtest-go"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Internet file retriever
+brew "wget"
 # Tool for managing your YubiKey configuration
 brew "ykman"
 # Command-line tool for the YubiKey PIV application
@@ -47,3 +73,8 @@ cask "rectangle-pro"
 cask "visual-studio-code"
 # Full-featured companion app to the YubiKey
 cask "yubico-authenticator"
+vscode "catppuccin.catppuccin-vsc"
+vscode "catppuccin.catppuccin-vsc-icons"
+vscode "ms-vscode-remote.remote-ssh"
+vscode "ms-vscode-remote.remote-ssh-edit"
+vscode "ms-vscode.remote-explorer"
