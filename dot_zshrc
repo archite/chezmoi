@@ -74,6 +74,9 @@ eval "$(zoxide init --cmd cd zsh)"
 
 [ -z "${SSH_CLIENT}" ] && eval "$(keychain add --eval --immediate --noinherit --quiet)"
 
+source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$(brew --prefix)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+
 compinit
 
 export EDITOR=nvim
