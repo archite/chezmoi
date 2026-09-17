@@ -76,6 +76,7 @@ eval "$(zoxide init --cmd cd zsh)"
 
 source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$(brew --prefix)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+source "${HOME}/.local/share/zsh/plugins/sudo/sudo.plugin.zsh"
 
 compinit
 

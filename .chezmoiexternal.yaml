@@ -1,0 +1,4 @@
+.local/share/zsh/plugins/sudo/sudo.plugin.zsh:
+  type: file
+  url: https://github.com/ohmyzsh/ohmyzsh/raw/refs/heads/master/plugins/sudo/sudo.plugin.zsh
+  refreshPeriod: 168h
