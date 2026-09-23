@@ -1,3 +1,4 @@
+tap "domt4/autoupdate", trusted: { commands: ["autoupdate"] }
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Object-file caching compiler wrapper
@@ -24,6 +25,8 @@ brew "git-lfs"
 brew "gnupg"
 # Perfect hash function generator
 brew "gperf"
+# Interactive computing in Python
+brew "ipython"
 # User-friendly front-end to ssh-agent(1)
 brew "keychain"
 # Implementation of the file(1) command
@@ -32,6 +35,8 @@ brew "libmagic"
 brew "neovim"
 # Small build system for use with gyp or CMake
 brew "ninja"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
 # On-chip debugging, in-system programming and boundary-scan testing
 brew "open-ocd"
 # OpenBSD freely-licensed SSH connectivity tools
@@ -44,6 +49,8 @@ brew "pinentry-mac"
 brew "poetry"
 # Python interface to Tcl/Tk
 brew "python-tk@3.14"
+# Command-line YAML and XML processor that wraps jq
+brew "python-yq"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Search tool like grep and The Silver Searcher
