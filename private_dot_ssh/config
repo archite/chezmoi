@@ -1,0 +1,59 @@
+Include /Users/adam/.colima/ssh_config
+
+Match Exec "test %p != 22 -a %r != %u"
+  ControlPath ~/.ssh/controlmasters/%r@%n:%p
+
+Match Exec "test %p != 22"
+  ControlPath ~/.ssh/controlmasters/%n:%p
+
+Match Exec "test %r != %u"
+  ControlPath ~/.ssh/controlmasters/%r@%n
+
+Host cloud.local
+  Port 2022
+
+Host haos.local
+  User root
+
+Host soft
+  CertificateFile no
+  HostName cloud.local
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/soft_ed25519
+  Port 23231
+
+Host kids
+  IdentityFile ~/.ssh/unifi_rsa
+  User root
+
+Host living-room
+  IdentityFile ~/.ssh/unifi_rsa
+  User root
+
+Host office
+  IdentityFile ~/.ssh/unifi_rsa
+  User root
+
+Host office-switch
+  IdentityFile ~/.ssh/unifi_rsa
+  User root
+
+Host unifi
+  IdentityFile ~/.ssh/unifi_rsa
+  User root
+
+Host *
+  AddKeysToAgent yes
+  Compression yes
+  ControlMaster auto
+  ControlPath ~/.ssh/controlmasters/%n
+  ControlPersist 6h
+  ForwardAgent yes
+  HashKnownHosts no
+  IgnoreUnknown UseKeychain
+  SendEnv LANG LC_*
+  ServerAliveCountMax 3
+  ServerAliveInterval 0
+  UseKeychain yes
+  UserKnownHostsFile ~/.ssh/known_hosts
+  WarnWeakCrypto no
