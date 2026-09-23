@@ -1,0 +1,178 @@
+#compdef sc_auth
+
+# Completion for the commands documented in sc_auth(8):
+# https://keith.github.io/xcode-man-pages/sc_auth.8.html
+# Hashes, token IDs, directory domains and certificate fields are free-form.
+# This completion does not invoke sc_auth or query smart cards.
+
+local curcontext="$curcontext" state state_descr
+local -a line commands args account_options subject_options
+local -A opt_args
+
+commands=(
+  'pair:Pair an account with a smart card key'
+  'unpair:Remove smart card pairings'
+  'pairing_ui:Control the pairing dialog'
+  'identities:Show identities on inserted smart cards'
+  'list:Show keys paired with an account'
+  'changepin:Change or unblock a PIV card PIN'
+  'verifypin:Check a PIV card PIN'
+  'enable_for_login:Make a token extension available for login'
+  'filevault:Configure smart card FileVault unlock'
+  'create-ctk-identity:Create a CryptoTokenKit identity'
+  'delete-ctk-identity:Delete a CryptoTokenKit identity'
+  'delete-all-ctk-identities:Delete every CryptoTokenKit identity'
+  'list-ctk-identities:Show CryptoTokenKit identities'
+  'import-ctk-identities:Load identities from a PKCS#12 archive'
+  'export-ctk-identity:Save an identity to a PKCS#12 archive'
+  'create-ctk-csr:Write a certificate signing request'
+  'import-ctk-certificate:Load a PEM certificate'
+  'accept:Authorize a smart card key (legacy)'
+  'remove:Revoke smart card keys for an account (legacy)'
+  'hash:Show smart card key hashes (legacy)'
+)
+
+_arguments -C \
+  '(-)1:command:->command' \
+  '*::argument:->args' && return 0
+
+case $state in
+  command)
+    _describe -t commands 'sc_auth command' commands
+    return
+    ;;
+  args)
+    curcontext="${curcontext%:*:*}:sc_auth-${line[1]}:"
+    ;;
+  *)
+    return 1
+    ;;
+esac
+
+account_options=(
+  '-v[Show verbose output]'
+  '-u[Select an account]:user:_users'
+)
+subject_options=(
+  '-N[Set the certificate common name]:common name'
+  '-E[Set the certificate email address]:email address'
+  '-U[Set the certificate organizational unit]:organizational unit'
+  '-O[Set the certificate organization]:organization'
+  '-L[Set the certificate locality]:locality'
+  '-S[Set the certificate state or province]:state or province'
+  '-C[Set the certificate country]:country'
+)
+
+case $line[1] in
+  pair|unpair)
+    args=(
+      "${account_options[@]}"
+      '-h[Select a public key by hash]:public key hash'
+    )
+    ;;
+  pairing_ui)
+    args=(
+      '-v[Show verbose output]'
+      '-f[Force the pairing dialog to appear]'
+      '-s[Set or query the pairing dialog state]:state:(enable disable status)'
+    )
+    ;;
+  identities|delete-all-ctk-identities)
+    _message 'no more arguments'
+    return
+    ;;
+  list|remove)
+    args=(
+      "${account_options[@]}"
+      '-d[Select the account directory domain]:directory domain'
+    )
+    ;;
+  changepin)
+    args=(
+      '-t[Select a PIV token]:token ID'
+      '-u[Unblock the PIN with the PUK]'
+    )
+    ;;
+  verifypin)
+    args=(
+      '-t[Select a PIV token]:token ID'
+      '-p[Supply the PIN to verify]:PIN'
+    )
+    ;;
+  enable_for_login)
+    args=(
+      '-c[Select the extension by its com.apple.ctk.class-id]:class ID'
+    )
+    ;;
+  filevault)
+    args=(
+      '-o[Set or query smart card unlock support]:operation:(status enable disable)'
+      '-u[Select an account]:user:_users'
+      '-h[Select a public key by hash]:public key hash'
+    )
+    ;;
+  create-ctk-identity)
+    args=(
+      '-l[Name the key]:label'
+      '-k[Choose the key type (-ne means non-exportable)]:key type:(p-256 p-384 p-521 p-256-ne p-384-ne)'
+      '-t[Choose private key protection]:protection:(bio none)'
+      "${subject_options[@]}"
+    )
+    ;;
+  delete-ctk-identity)
+    args=(
+      '-h[Select an identity by public key hash]:identity hash'
+    )
+    ;;
+  list-ctk-identities)
+    args=(
+      '-t[Choose the public key hash format]:hash format:(sha1 sha256 ssh)'
+      '-e[Choose the public key hash encoding]:encoding:(hex b64)'
+    )
+    ;;
+  import-ctk-identities)
+    args=(
+      '-f[Read a PKCS#12 archive]:PKCS#12 archive:_files'
+      '-t[Choose private key protection]:protection:(bio none)'
+      '-p[Supply the archive password]:password'
+    )
+    ;;
+  export-ctk-identity)
+    args=(
+      '-h[Select an identity by public key hash]:identity hash'
+      '-f[Write a PKCS#12 archive]:output archive:_files'
+      '-p[Set the archive password]:password'
+    )
+    ;;
+  create-ctk-csr)
+    args=(
+      '-h[Select an identity by public key hash]:identity hash'
+      '-f[Write a PEM certificate signing request]:output CSR:_files'
+      "${subject_options[@]}"
+    )
+    ;;
+  import-ctk-certificate)
+    args=(
+      '-f[Read a PEM certificate]:certificate file:_files'
+    )
+    ;;
+  accept)
+    args=(
+      "${account_options[@]}"
+      '-d[Select the account directory domain]:directory domain'
+      '(-h)-k[Select a public key by name]:key name'
+      '(-k)-h[Select a public key by hash]:public key hash'
+    )
+    ;;
+  hash)
+    args=(
+      '-k[Select a public key by name]:key name'
+    )
+    ;;
+  *)
+    _message 'unknown sc_auth command'
+    return 1
+    ;;
+esac
+
+_arguments -s -S : "${args[@]}"
