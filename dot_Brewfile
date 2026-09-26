@@ -78,6 +78,8 @@ brew "zsh-fast-syntax-highlighting"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 cask "font-jetbrains-mono-nerd-font"
+# Web browser
+cask "google-chrome"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Control your tools with a few keystrokes
