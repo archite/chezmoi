@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+
+set -e
+
+maxlen ()
+{
+  len=0
+  for i in $@; do
+    nlen=$(echo -n "${i}" | wc -c)
+    if [[ ${len} -lt ${nlen} ]]; then
+      len=${nlen}
+    fi
+  done
+  echo $((${len} + 1))
+}
+
+close ()
+{
+  len=$(maxlen $@)
+  for socket in $@; do
+    printf "%-${len}s " "${socket}:"
+    ssh -O exit ${socket} 2>&1
+  done
+}
+
+connections=(${(o)$(find ~/.ssh/controlmasters -type s):t})
+
+if [[ ${connections} ]]; then
+  if [[ $# -eq 1 ]]; then
+    close ${1}
+  else
+    echo "Close all connections? (${(pj:,:)connections})"
+    read -sq
+    close ${connections}
+  fi
+fi
