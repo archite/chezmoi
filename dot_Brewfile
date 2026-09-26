@@ -31,6 +31,8 @@ brew "ipython"
 brew "keychain"
 # Implementation of the file(1) command
 brew "libmagic"
+# Mac App Store command-line interface
+brew "mas"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Small build system for use with gyp or CMake
@@ -90,6 +92,11 @@ cask "rectangle-pro"
 cask "visual-studio-code"
 # Full-featured companion app to the YubiKey
 cask "yubico-authenticator"
+mas "Brother P-touch Editor", id: 1453365242
+mas "Home Assistant", id: 1099568401
+mas "Noir", id: 1592917505
+mas "Paste", id: 967805235
+mas "Wipr", id: 1662217862
 vscode "catppuccin.catppuccin-vsc"
 vscode "catppuccin.catppuccin-vsc-icons"
 vscode "ms-vscode-remote.remote-ssh"
