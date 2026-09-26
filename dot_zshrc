@@ -1,3 +1,13 @@
+setopt auto_pushd
+setopt extendedglob
+setopt hist_ignore_space
+setopt hist_save_no_dups
+setopt inc_append_history
+setopt no_global_rcs
+setopt pushd_ignore_dups
+setopt pushd_silent
+setopt rm_star_silent
+
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 HISTSIZE=50000
 SAVEHIST=${HISTSIZE}
@@ -61,7 +71,7 @@ zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:
 zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' cache-path ~/.cache/zsh
-zstyle ':completion:*' rehash true
+zstyle ':completion:*:commands' rehash true
 zstyle ':completion:*' menu select
 zstyle ':completion:*:*:docker-*:*' option-stacking yes
 zstyle ':completion:*:*:docker:*' option-stacking yes
@@ -78,7 +88,12 @@ source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$(brew --prefix)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 source "${HOME}/.local/share/zsh/plugins/sudo/sudo.plugin.zsh"
 
-compinit
+# Check if .zcompdump is older than 24 hours (86400 seconds)
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+	compinit
+else
+	compinit -C
+fi
 
 export EDITOR=nvim
 
