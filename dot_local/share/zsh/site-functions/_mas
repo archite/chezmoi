@@ -1,0 +1,125 @@
+#compdef mas
+
+# Completion based on the mas(1) manual dated September 18, 2026.
+# App IDs and search terms are free-form; completion does not invoke mas.
+
+local curcontext="$curcontext" context state state_descr line
+local -A opt_args
+local -a commands common_options options
+
+commands=(
+  'config:Output mas config and related system info'
+  'get:Get and install free apps'
+  'home:Open app pages in the default web browser'
+  'install:Install previously gotten apps'
+  'list:List installed App Store apps'
+  'lookup:Output app info from the App Store'
+  'lucky:Install the first app returned by a search'
+  'open:Open an app page in App Store.app'
+  'outdated:List pending app updates'
+  'reset:Reset App Store processes and clear cached downloads'
+  'search:Search for apps in the App Store'
+  'seller:Open seller pages in the default web browser'
+  'signout:Sign out of the App Store'
+  'uninstall:Uninstall App Store apps'
+  'update:Update outdated App Store apps'
+  'version:Output version number'
+  'help:Show subcommand help information'
+)
+
+common_options=(
+  '(- *)--version[Show the version]'
+  '(- *)-h[Show help information]'
+  '(- *)--help[Show help information]'
+)
+
+_arguments -C \
+  "${common_options[@]}" \
+  '1:subcommand:->commands' \
+  '*::argument:->arguments' && return
+
+case $state in
+  commands)
+    _describe -t commands 'mas subcommand' commands
+    ;;
+  arguments)
+    # The double-colon argument above scopes words and CURRENT to the
+    # selected subcommand, so subsequent _arguments calls parse its options.
+    curcontext="${curcontext%:*:*}:mas-${words[1]}:"
+
+    case $words[1] in
+      config|list|lookup|outdated|search)
+        options+=( '--json[Output JSON]' )
+        ;;
+    esac
+
+    case $words[1] in
+      get|install|lucky|update)
+        options+=( '--force[Force reinstall]' )
+        ;;
+    esac
+
+    case $words[1] in
+      outdated|update)
+        options+=(
+          '(--inaccurate)--accurate[Use slower checks that start and cancel downloads and may open dialogs]'
+          '(--accurate)--inaccurate[Use faster, less accurate checks that avoid dialogs]'
+          '(--no-check-min-os)--check-min-os[Check whether macOS can install the latest app version]'
+          '(--check-min-os)--no-check-min-os[Disable the minimum macOS version check]'
+          '--verbose[Warn about app IDs unknown to the App Store]'
+        )
+        ;;
+    esac
+
+    case $words[1] in
+      get|home|install|list|lookup|open|outdated|seller|uninstall|update)
+        options+=( '--bundle[Process all app IDs as bundle IDs]' )
+        if [[ $words[1] == open ]]; then
+          options+=( '1:app ID:->app_ids' )
+        else
+          options+=( '*:app ID:->app_ids' )
+        fi
+        ;;
+      lucky|search)
+        options+=( '*:search term: ' )
+        ;;
+      help)
+        common_options=( '(- *)--version[Show the version]' )
+        options+=( '*:subcommand:->commands' )
+        ;;
+      config|reset|signout|version)
+        ;;
+      *)
+        _message 'unknown mas subcommand'
+        return 1
+        ;;
+    esac
+
+    case $words[1] in
+      search)
+        options+=( '--price[Output the price of each app]' )
+        ;;
+      uninstall)
+        options+=(
+          '--dry-run[Perform a dry run]'
+          '--all[Uninstall all App Store apps]'
+        )
+        ;;
+    esac
+
+    _arguments -C "${common_options[@]}" "${options[@]}" && return
+
+    case $state in
+      commands)
+        _describe -t commands 'mas subcommand' commands
+        ;;
+      app_ids)
+        if (( ${+opt_args[--bundle]} )); then
+          _message 'bundle ID'
+        else
+          _message 'app ID'
+        fi
+        ;;
+    esac
+    ;;
+esac
